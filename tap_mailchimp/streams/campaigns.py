@@ -1,4 +1,4 @@
-
+from datetime import datetime
 from tap_mailchimp.streams.base import BaseStream
 import singer
 
@@ -17,6 +17,7 @@ class CampaignsStream(BaseStream):
         params = {
             "count": self.count,
             "offset": offset,
+            "exclude_fields": 'campaigns._links',
             "status": "sent",
             "since_send_time": start_date,
             "sort_field": "send_time",
@@ -25,4 +26,6 @@ class CampaignsStream(BaseStream):
         return params
 
     def get_last_record_date(self, data):
+        if len(data) == 0:
+            return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return data[-1]['send_time']

@@ -1,4 +1,4 @@
-
+from datetime import datetime
 from tap_mailchimp.streams.base import BaseStream
 import singer
 
@@ -24,4 +24,6 @@ class ListsStream(BaseStream):
         return params
 
     def get_last_record_date(self, data):
+        if len(data) == 0:
+            return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return data[-1]['date_created']

@@ -17,6 +17,7 @@ class ListMembersStream(BaseStream):
         params = {
             "count": self.count,
             "offset": offset,
+            "exclude_fields": "members._links,members.merge_fields,members.interests,members.marketing_permissions",
             "since_last_changed": start_date,
             "sort_field": "last_changed",
             "sort_dir": "ASC"
@@ -38,6 +39,3 @@ class ListMembersStream(BaseStream):
 
         self.state = incorporate(self.state, table, 'last_record', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         save_state(self.state)
-
-    # def get_last_record_date(self, data):
-    #     return data[-1]['last_changed']

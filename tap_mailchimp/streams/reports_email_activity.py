@@ -17,7 +17,8 @@ class ReportsEmailActivityStream(BaseStream):
         params = {
             "count": self.count,
             "offset": offset,
-            "since": start_date
+            "since": start_date,
+            "exclude_fields": "emails._links"
         }
         return params
 
