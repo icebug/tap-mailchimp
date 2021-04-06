@@ -1,5 +1,6 @@
 from datetime import datetime
 from tap_mailchimp.streams.base import BaseStream
+from tap_mailchimp.state import save_state, incorporate
 import singer
 
 LOGGER = singer.get_logger()
@@ -33,7 +34,10 @@ class ListMembersStream(BaseStream):
 
         for list_id in lists:
             self.path = '/lists/{}/members'.format(list_id)
-            self.sync_paginated(self.path)
+            self.sync_paginated(self.path, False)
 
-    def get_last_record_date(self, data):
-        return data[-1]['last_changed']
+        self.state = incorporate(self.state, table, 'last_record', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        save_state(self.state)
+
+    # def get_last_record_date(self, data):
+    #     return data[-1]['last_changed']

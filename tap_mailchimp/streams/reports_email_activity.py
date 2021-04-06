@@ -1,5 +1,7 @@
 from tap_mailchimp.streams.base import BaseStream
+from tap_mailchimp.state import save_state, incorporate
 import singer
+from datetime import datetime
 
 LOGGER = singer.get_logger()
 
@@ -30,4 +32,7 @@ class ReportsEmailActivityStream(BaseStream):
 
         for campaign_id in campaigns:
             self.path = '/reports/{}/email-activity'.format(campaign_id)
-            self.sync_paginated(self.path)
+            self.sync_paginated(self.path, False)
+
+        self.state = incorporate(self.state, table, 'last_record', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        save_state(self.state)

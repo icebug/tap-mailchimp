@@ -16,6 +16,7 @@ LOGGER = singer.get_logger()
 class BaseStream(base):
     KEY_PROPERTIES = ["id"]
     CACHE = False
+    TABLE = ''
     count = 500
     path = '/'
     response_key = ''
@@ -27,7 +28,7 @@ class BaseStream(base):
         }
         return params
 
-    def sync_paginated(self, path):
+    def sync_paginated(self, path, should_save_state):
         table = self.TABLE
         total_items = 100
         offset = 0
@@ -49,18 +50,18 @@ class BaseStream(base):
             if self.CACHE:
                 stream_cache[table].extend(transformed)
 
-            data = response.get(self.response_key, [])
-            last_record_date = self.get_last_record_date(data)
             total_items = response.get("total_items", 0)
             offset += self.count
 
-            self.state = incorporate(self.state, table, 'last_record', last_record_date)
-            save_state(self.state)
+            if should_save_state:
+                data = response.get(self.response_key, [])
+                self.state = incorporate(self.state, table, 'last_record', self.get_last_record_date(data))
+                save_state(self.state)
 
     def sync_data(self):
         table = self.TABLE
         LOGGER.info("Syncing data for {}".format(table))
-        self.sync_paginated(self.path)
+        self.sync_paginated(self.path, True)
 
         return self.state
 

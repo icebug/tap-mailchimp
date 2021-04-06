@@ -33,7 +33,7 @@ class SegmentsMemberStream(BaseStream):
             for segment_id in segments:
                 self.segment_id = segment_id
                 self.path = '/lists/{0}/segments/{1}/members'.format(list_id, segment_id)
-                self.sync_paginated(self.path)
+                self.sync_paginated(self.path, False)
 
     def get_stream_data(self, response):
         transformed = []

@@ -53,4 +53,4 @@ Step 4 generates a a file called `catalog.json` that specifies all the available
 tap-mailchimp -c config.json --catalog catalog.json
 ```
 
-Copyright &copy; 2020 Fishtown Analytics
+Copyright &copy; 2021 Icebug

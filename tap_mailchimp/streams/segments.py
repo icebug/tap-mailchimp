@@ -1,5 +1,6 @@
 from datetime import datetime
 from tap_mailchimp.streams.base import BaseStream
+from tap_mailchimp.state import save_state, incorporate
 import singer
 
 LOGGER = singer.get_logger()
@@ -27,8 +28,13 @@ class SegmentsStream(BaseStream):
         # get all lists
         response = self.client.make_request(path='/lists', method='GET', params={"count": 500})
         data = response['lists']
-        lists = list(map(lambda x: x['id'], data))
+        lists = list(map(lambda x: str(x['id']), data))
 
         for list_id in lists:
-            self.path = '/lists/{}/segments'.format(list_id)
-            self.sync_paginated(self.path)
+            path = '/lists/{}/segments'.format(list_id)
+            self.sync_paginated(path, False)
+
+        self.state = incorporate(self.state, table, 'last_record', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        save_state(self.state)
+
+        return self.state

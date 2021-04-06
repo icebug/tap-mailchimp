@@ -32,7 +32,6 @@ class MailchimpClient(BaseClient):
 
         LOGGER.info("Making {} request to {}".format(method, path))
         url = self.__base_url + path
-        LOGGER.critical(url)
 
         response = requests.request(
             method=method,
