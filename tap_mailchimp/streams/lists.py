@@ -19,7 +19,8 @@ class ListsStream(BaseStream):
             "offset": offset,
             "since_date_created": start_date,
             "sort_field": "date_created",
-            "sort_dir": "ASC"
+            "sort_dir": "ASC",
+            "exclude_fields": "_links,lists._links"
         }
         return params
 
