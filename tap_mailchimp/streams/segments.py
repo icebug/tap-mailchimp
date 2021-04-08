@@ -10,7 +10,7 @@ class SegmentsStream(BaseStream):
     API_METHOD = "GET"
     TABLE = "segments"
     KEY_PROPERTIES = ["id"]
-    count = 500
+    count = 1000
     response_key = "segments"
 
     def get_params(self, offset, start_date):

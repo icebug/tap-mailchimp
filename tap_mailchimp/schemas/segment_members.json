@@ -164,7 +164,10 @@
       "format": "date-time"
     },
     "segment_id": {
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+        ]
     }
   }
 }

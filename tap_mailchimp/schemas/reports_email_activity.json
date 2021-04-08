@@ -29,49 +29,36 @@
         "string"
       ]
     },
-    "activity": {
+    "action": {
       "type": [
-        "array"
+        "null",
+        "string"
+      ]
+    },
+    "type": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "timestamp": {
+      "type": [
+        "null",
+        "string"
       ],
-      "items": {
-        "type": [
-          "object"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "action": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "type": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "timestamp": {
-            "type": [
-              "null",
-              "string"
-            ],
-            "format": "date-time"
-          },
-          "ip": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "url": {
-            "type": [
-              "null",
-              "string"
-            ]
-          }
-        }
-      }
+      "format": "date-time"
+    },
+    "ip": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "url": {
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "report_date": {
       "type": "string",

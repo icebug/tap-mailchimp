@@ -8,7 +8,12 @@ It:
 - Generates a catalog of available data in Mailchimp
 - Extracts the following resources:
 
-  - lists
+  - [lists](https://mailchimp.com/developer/marketing/api/lists/get-lists-info/)
+  - [list_members](https://mailchimp.com/developer/marketing/api/list-members/list-members-info/)
+  - [segments](https://mailchimp.com/developer/marketing/api/list-segments/list-segments/)
+  - [segment_members](https://mailchimp.com/developer/marketing/api/list-segment-members/list-members-in-segment/)
+  - [campaigns](https://mailchimp.com/developer/marketing/api/campaigns/list-campaigns/)
+  - [reports_email_activity](https://mailchimp.com/developer/marketing/api/email-activity-reports/list-email-activity/)
 
 
 ### Quick Start

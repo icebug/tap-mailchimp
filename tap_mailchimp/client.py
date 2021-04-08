@@ -49,3 +49,13 @@ class MailchimpClient(BaseClient):
         if response.status_code != 200:
             raise RuntimeError(response.text)
         return response.json()
+
+    def make_aws_request(self, method, url):
+        LOGGER.info("Making {} request to {}".format(method, url))
+
+        response = requests.request(
+            method=method,
+            url=url,
+            stream=True)
+
+        return response

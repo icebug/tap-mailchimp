@@ -13,35 +13,53 @@ class SegmentsMemberStream(BaseStream):
     KEY_PROPERTIES = ["id"]
     count = 1000
     response_key = "members"
-    segment_id = ''
+
+    def get_params(self, offset, start_date):
+        params = {
+            "count": self.count,
+            "offset": offset,
+            "exclude_fields": "members._links,members.merge_fields,members.interests"
+        }
+        return params
 
     def sync_data(self):
-        table = self.TABLE
-        LOGGER.info("Syncing data for {}".format(table))
+        LOGGER.info("Syncing data for {}".format(self.TABLE))
 
         # get all lists
-        response = self.client.make_request(path='/lists', method='GET', params={"count": 500})
+        response = self.client.make_request(path='/lists', method='GET', params={"count": 1000})
         data = response['lists']
         lists = list(map(lambda x: x['id'], data))
 
+        operations = []
         for list_id in lists:
             path = '/lists/{}/segments'.format(list_id)
-            response = self.client.make_request(path=path, method='GET', params={"count": 500})
+            # get all segments
+            response = self.client.make_request(path=path, method='GET', params={"count": 1000})
             data = response['segments']
-            segments = list(map(lambda x: x['id'], data))
+            segments = list(map(lambda x: str(x['id']), data))
 
             for segment_id in segments:
-                self.segment_id = segment_id
-                self.path = '/lists/{0}/segments/{1}/members'.format(list_id, segment_id)
-                self.sync_paginated(self.path, False)
+                operations.append(
+                    {
+                        'method': self.API_METHOD,
+                        'path': '/lists/{0}/segments/{1}/members'.format(list_id, segment_id),
+                        'operation_id': segment_id,
+                        'params': {
+                            'since': self.get_start_date(self.TABLE).isoformat(),
+                            'exclude_fields': "members._links,members.merge_fields,members.interests"
+                        }
+                    }
+                )
 
-    def get_stream_data(self, response):
+        self.batch_sync_data(operations)
+
+    def get_stream_data(self, response, operation_id=None):
         transformed = []
 
         for record in response[self.response_key]:
             record = self.transform_record(record)
             record['reportDate'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            record['segment_id'] = self.segment_id
+            record['segment_id'] = str(operation_id).split('-')[0]
             transformed.append(record)
 
         return transformed

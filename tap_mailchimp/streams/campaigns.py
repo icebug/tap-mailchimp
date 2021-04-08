@@ -9,7 +9,7 @@ class CampaignsStream(BaseStream):
     API_METHOD = "GET"
     TABLE = "campaigns"
     KEY_PROPERTIES = ["id"]
-    count = 50
+    count = 500
     path = "/campaigns"
     response_key = "campaigns"
 
