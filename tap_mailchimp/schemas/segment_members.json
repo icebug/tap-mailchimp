@@ -108,51 +108,6 @@
         "string"
       ]
     },
-    "location": {
-      "type": [
-        "null",
-        "object"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "latitude": {
-          "type": [
-            "null",
-            "number"
-          ]
-        },
-        "longitude": {
-          "type": [
-            "null",
-            "number"
-          ]
-        },
-        "gmtoff": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "dstoff": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "country_code": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
-        "timezone": {
-          "type": [
-            "null",
-            "string"
-          ]
-        }
-      }
-    },
     "list_id": {
       "type": [
         "null",
