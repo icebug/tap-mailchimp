@@ -14,18 +14,28 @@ class ReportsEmailActivityStream(BaseStream):
 
     def sync_data(self):
         LOGGER.info("Syncing data for {}".format(self.TABLE))
+        total_campaigns = 100
+        count = 1000
+        offset = 0
 
-        # get all campaign_ids
-        campaign_params = {
-            "count": 1000,
-            "since_send_time": (parse(self.config.get('start_date'))).isoformat(),
-            "sort_field": "send_time",
-            "sort_dir": "ASC"
-        }
-        response = self.client.make_request(path='/campaigns', method='GET', params=campaign_params)
-        data = response['campaigns']
-        campaign_ids = list(map(lambda x: x['id'], data))
+        campaign_ids = []
+        while offset < total_campaigns:
+            campaign_params = {
+                "count": count,
+                "offset": offset,
+                "since_send_time": (parse(self.config.get('start_date'))).isoformat(),
+                "sort_field": "send_time",
+                "sort_dir": "ASC"
+            }
+            response = self.client.make_request(path='/campaigns', method='GET', params=campaign_params)
+            total_campaigns = response['total_items']
 
+            data = response['campaigns']
+            campaign_ids += list(map(lambda x: x['id'], data))
+
+            offset += count
+
+        LOGGER.info('Number of campaigns: {}'.format(len(campaign_ids)))
         operations = []
         for campaign_id in campaign_ids:
             operations.append(
@@ -45,14 +55,13 @@ class ReportsEmailActivityStream(BaseStream):
         transformed = []
 
         for record in response[self.response_key]:
-            record = self.transform_record(record)
-            record['report_date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
             for activity in record.get('activity', []):
                 new_activity = dict(record)
                 del new_activity['activity']
                 for key, value in activity.items():
                     new_activity[key] = value
+                    new_activity = self.transform_record(new_activity)
+                    new_activity['report_date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     transformed.append(new_activity)
 
         return transformed
