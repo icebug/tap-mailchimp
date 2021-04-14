@@ -48,12 +48,6 @@
       ],
       "format": "date-time"
     },
-    "ip": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "url": {
       "type": [
         "null",

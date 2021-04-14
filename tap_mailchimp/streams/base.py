@@ -22,7 +22,7 @@ class BaseStream(base):
     KEY_PROPERTIES = ["id"]
     CACHE = False
     TABLE = ''
-    count = 500
+    count = 1000
     path = '/'
     response_key = ''
 
@@ -99,7 +99,7 @@ class BaseStream(base):
 
         failed_ids = self.save_batch_data(data['response_body_url'])
         if failed_ids:
-            LOGGER.warning("%s - operations failed for ids: %s", self.TABLE, failed_ids)
+            LOGGER.warning("{} - operations failed for ids: {}".format(self.TABLE, failed_ids))
 
         self.state = incorporate(self.state, self.TABLE, 'last_record', self.get_last_record_date(data))
         save_state(self.state)
@@ -144,10 +144,12 @@ class BaseStream(base):
                     if file.isfile():
                         raw_operations = tar.extractfile(file)
                         operations = json.loads(raw_operations.read().decode('utf-8'))
+
                         for i, operation in enumerate(operations):
                             operation_id = operation['operation_id']
                             LOGGER.info("%s - [batch operation %s] Processing records for id %s",
                                         self.TABLE, i, operation_id)
+
                             if operation['status_code'] != 200:
                                 failed_ids.append(operation_id)
                             else:

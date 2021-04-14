@@ -52,19 +52,7 @@
         }
       }
     },
-    "ip_signup": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "timestamp_signup": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    "ip_opt": {
       "type": [
         "null",
         "string"
