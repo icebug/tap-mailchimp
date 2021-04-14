@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import singer
-
 import tap_framework
-
 from tap_mailchimp.client import MailchimpClient
 from tap_mailchimp.streams import AVAILABLE_STREAMS
 

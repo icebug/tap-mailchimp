@@ -56,34 +56,49 @@ class SegmentsMemberStream(BaseStream):
             offset = 0
             count = 1000
 
-            segment_ids = []
+            segments = {}
+            member_count = 0
             while offset < total_segments:
                 segment_params = {
                     "count": count,
                     "offset": offset,
-                    "fields": "segments.id,total_items"
+                    "fields": "segments.id,total_items,segments.member_count"
                 }
 
                 response = self.client.make_request(path=path, method='GET', params=segment_params)
                 data = response['segments']
-                segment_ids += list(map(lambda x: str(x['id']), data))
+                segment_ids = list(map(lambda x: str(x['id']), data))
+                member_count = list(map(lambda x: int(x['member_count']), data))
+                new_segments = dict((x, y) for x, y in zip(segment_ids, member_count))
+                segments = {**segments, **new_segments}
 
                 total_segments = response['total_items']
                 offset += count
 
-            for segment_id in segment_ids:
-                operations.append(
-                    {
-                        'method': self.API_METHOD,
-                        'path': '/lists/{0}/segments/{1}/members'.format(list_id, segment_id),
-                        'operation_id': segment_id,
-                        'params': {
-                            'since': self.get_start_date(self.TABLE).isoformat(),
-                            'exclude_fields': "members._links,members.merge_fields,members.interests,members.location"
-                        }
+            for segment_id, member_count in segments.items():
+                offset = 0
+                count = 1000
+
+                while offset < member_count:
+
+                    params = {
+                        'count': count,
+                        'offset': offset,
+                        'since': self.get_start_date(self.TABLE).isoformat(),
+                        'exclude_fields': "members._links,members.merge_fields,members.interests,members.location"
                     }
-                )
-        LOGGER.info('Number of segments: {}'.format(len(segment_ids)))
+                    operations.append(
+                        {
+                            'method': self.API_METHOD,
+                            'path': '/lists/{0}/segments/{1}/members'.format(list_id, segment_id),
+                            'operation_id': segment_id,
+                            'params': params
+                        }
+                    )
+
+                    offset += count
+
+        LOGGER.info('Batching {} operations'.format(len(operations)))
         self.batch_sync_data(operations)
 
     def get_stream_data(self, response, operation_id=None):
