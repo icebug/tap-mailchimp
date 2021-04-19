@@ -17,7 +17,8 @@ class ListMembersStream(BaseStream):
         params = {
             "count": self.count,
             "offset": offset,
-            "exclude_fields": "members._links,members.merge_fields,members.interests,members.marketing_permissions",
+            "exclude_fields": "members._links,members.merge_fields,members.interests,members.marketing_permissions,"
+                              "members.location,members.ip_opt,members.ip_signup,members.email_address",
             "since_last_changed": start_date,
             "sort_field": "last_changed",
             "sort_dir": "ASC"

@@ -19,7 +19,8 @@ class SegmentsMemberStream(BaseStream):
         params = {
             "count": self.count,
             "offset": offset,
-            "exclude_fields": "members._links,members.merge_fields,members.interests"
+            "exclude_fields": "members._links,members.merge_fields,members.interests,"
+                              "members.ip_opt,members.ip_signup,members.email_address"
         }
         return params
 

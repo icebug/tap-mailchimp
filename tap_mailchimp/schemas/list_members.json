@@ -13,12 +13,6 @@
         "integer"
       ]
     },
-    "email_address": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "unique_email_id": {
       "type": [
         "null",
@@ -64,24 +58,12 @@
         }
       }
     },
-    "ip_signup": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "timestamp_signup": {
       "type": [
         "null",
         "string"
       ],
       "format": "date-time"
-    },
-    "ip_opt": {
-      "type": [
-        "null",
-        "string"
-      ]
     },
     "timestamp_opt": {
       "type": [
@@ -120,51 +102,6 @@
         "null",
         "string"
       ]
-    },
-    "location": {
-      "type": [
-        "null",
-        "object"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "latitude": {
-          "type": [
-            "null",
-            "number"
-          ]
-        },
-        "longitude": {
-          "type": [
-            "null",
-            "number"
-          ]
-        },
-        "gmtoff": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "dstoff": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "country_code": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
-        "timezone": {
-          "type": [
-            "null",
-            "string"
-          ]
-        }
-      }
     },
     "source": {
       "type": [
