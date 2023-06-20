@@ -34,7 +34,7 @@ class SegmentsStream(BaseStream):
             path = '/lists/{}/segments'.format(list_id)
             self.sync_paginated(path, False)
 
-        self.state = incorporate(self.state, table, 'last_record', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        self.state = incorporate(self.state, table, 'last_record', datetime.now().isoformat())
         save_state(self.state)
 
         return self.state

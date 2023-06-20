@@ -107,7 +107,7 @@ class SegmentsMemberStream(BaseStream):
 
         for record in response[self.response_key]:
             record = self.transform_record(record)
-            record['reportDate'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            record['reportDate'] = datetime.now().isoformat()
             record['segment_id'] = str(operation_id).split('-')[0]
             transformed.append(record)
 

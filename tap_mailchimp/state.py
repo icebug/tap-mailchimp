@@ -26,9 +26,9 @@ def incorporate(state, table, field, value):
         new_state = state.copy()
 
     if isinstance(value, datetime.datetime):
-        parsed = value.strftime("%Y-%m-%d %H:%M:%S")
+        parsed = value.isoformat()
     else:
-        parsed = parse(value).strftime("%Y-%m-%d %H:%M:%S")
+        parsed = parse(value).isoformat()
 
     if "bookmarks" not in new_state:
         new_state["bookmarks"] = {}

@@ -38,5 +38,5 @@ class ListMembersStream(BaseStream):
             self.path = '/lists/{}/members'.format(list_id)
             self.sync_paginated(self.path, False)
 
-        self.state = incorporate(self.state, table, 'last_record', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        self.state = incorporate(self.state, table, 'last_record', datetime.now().isoformat())
         save_state(self.state)

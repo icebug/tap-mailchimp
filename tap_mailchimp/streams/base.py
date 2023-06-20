@@ -78,13 +78,13 @@ class BaseStream(base):
 
         for record in response[self.response_key]:
             record = self.transform_record(record)
-            record['report_date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            record['report_date'] = datetime.now().isoformat()
             transformed.append(record)
 
         return transformed
 
     def get_last_record_date(self, data):
-        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return datetime.now().isoformat()
 
     def batch_sync_data(self, operations):
         response = self.client.make_request(path='/batches', method='POST', body=json.dumps({'operations': operations}))

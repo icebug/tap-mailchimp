@@ -61,7 +61,7 @@ class ReportsEmailActivityStream(BaseStream):
                 for key, value in activity.items():
                     new_activity[key] = value
                     new_activity = self.transform_record(new_activity)
-                    new_activity['report_date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    new_activity['report_date'] = datetime.now().isoformat()
                     transformed.append(new_activity)
 
         return transformed

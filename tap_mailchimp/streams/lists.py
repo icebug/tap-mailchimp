@@ -26,5 +26,5 @@ class ListsStream(BaseStream):
 
     def get_last_record_date(self, data):
         if len(data) == 0:
-            return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            return datetime.now().isoformat()
         return data[-1]['date_created']
