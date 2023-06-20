@@ -1,4 +1,5 @@
 import datetime
+from datetime import timezone
 import json
 import singer
 
@@ -13,7 +14,7 @@ def get_last_record_value_for_table(state, table):
     if last_value is None:
         return None
 
-    return parse(last_value)
+    return parse(last_value).replace(tzinfo=timezone.utc)
 
 
 def incorporate(state, table, field, value):
@@ -26,9 +27,11 @@ def incorporate(state, table, field, value):
         new_state = state.copy()
 
     if isinstance(value, datetime.datetime):
-        parsed = value.isoformat()
+        parsed = value.replace(tzinfo=timezone.utc).isoformat()
+        LOGGER.info(f"if {parsed}")
     else:
-        parsed = parse(value).isoformat()
+        parsed = parse(value).replace(tzinfo=timezone.utc).isoformat()
+        LOGGER.info(f"else {parsed}")
 
     if "bookmarks" not in new_state:
         new_state["bookmarks"] = {}
